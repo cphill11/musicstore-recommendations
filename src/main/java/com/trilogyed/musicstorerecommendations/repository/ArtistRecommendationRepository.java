@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ArtistRecommendationRepository extends JpaRepository<ArtistRecommendation, Long> {
-    List<ArtistRecommendation> findById(String artistRecommendation);
+//    List<ArtistRecommendation> findById(String artistRecommendation);
 }

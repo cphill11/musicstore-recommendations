@@ -22,16 +22,16 @@ public class TrackRecommendation {
     private int trackId;
 
     @NotNull
-    @Column(name = "album_id")
-    private int albumId;
+    @Column(name = "user_id")
+    private int userId;
 
     @NotNull
     private Boolean liked;
 
-    public TrackRecommendation(long id, int trackId, int albumId, Boolean liked) {
+    public TrackRecommendation(long id, int trackId, int userId, Boolean liked) {
         this.id = id;
         this.trackId = trackId;
-        this.albumId = albumId;
+        this.userId = userId;
         this.liked = liked;
     }
 
@@ -51,12 +51,12 @@ public class TrackRecommendation {
         this.trackId = trackId;
     }
 
-    public int getAlbumId() {
-        return albumId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setAlbumId(int albumId) {
-        this.albumId = albumId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Boolean getLiked() {
@@ -72,12 +72,12 @@ public class TrackRecommendation {
         if (this == o) return true;
         if (!(o instanceof TrackRecommendation)) return false;
         TrackRecommendation that = (TrackRecommendation) o;
-        return getId() == that.getId() && getTrackId() == that.getTrackId() && getAlbumId() == that.getAlbumId() && Objects.equals(getLiked(), that.getLiked());
+        return getId() == that.getId() && getTrackId() == that.getTrackId() && getUserId() == that.getUserId() && Objects.equals(getLiked(), that.getLiked());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTrackId(), getAlbumId(), getLiked());
+        return Objects.hash(getId(), getTrackId(), getUserId(), getLiked());
     }
 
     @Override
@@ -85,7 +85,7 @@ public class TrackRecommendation {
         return "TrackRecommendation{" +
                 "id=" + id +
                 ", trackId=" + trackId +
-                ", albumId=" + albumId +
+                ", userId=" + userId +
                 ", liked=" + liked +
                 '}';
     }
