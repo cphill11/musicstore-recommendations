@@ -1,3 +1,10 @@
+create table label_recommendation (
+    label_recommendation_id int primary key auto_increment,
+    label_id int not null,
+    user_id int not null,
+    liked bool not null
+);
+
 create table artist_recommendation (
     artist_recommendation_id int primary key auto_increment,
     artist_id int not null,
@@ -18,4 +25,5 @@ create table track_recommendation (
     user_id int not null,
     liked bool not null
 );
+
 
