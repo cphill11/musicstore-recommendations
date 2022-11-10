@@ -2,16 +2,15 @@ package com.trilogyed.musicstorerecommendations.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trilogyed.musicstorerecommendations.model.ArtistRecommendation;
-import com.trilogyed.musicstorerecommendations.model.LabelRecommendation;
-import com.trilogyed.musicstorerecommendations.repository.LabelRecommendationRepository;
+import com.trilogyed.musicstorerecommendations.repository.ArtistRecommendationRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.runner.RunWith;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -27,59 +26,61 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(LabelRecommendationController.class)
-public class LabelRecommendationControllerTest {
+@WebMvcTest(ArtistRecommendationController.class)
+public class ArtistRecommendationControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private LabelRecommendationRepository repo;
+    private ArtistRecommendationRepository repo;
 
     @Autowired
     private ObjectMapper mapper;
 
-    private LabelRecommendation musicStoreLabelRecommendation;
+    private ArtistRecommendation musicStoreArtistRecommendation;
 
     private String musicStoreJson;
 
-    private List<LabelRecommendation> allLabelRecommendations = new ArrayList<>();
-    private String allLabelRecommendationsJson;
+    private List<ArtistRecommendation> allArtistRecommendations = new ArrayList<>();
+    private String allArtistRecommendationsJson;
+
     // from Project 1
     @Before
     public void setup() throws Exception {
         // input
-        musicStoreLabelRecommendation = new LabelRecommendation();
-        musicStoreLabelRecommendation.setLabelId(1);
-        musicStoreLabelRecommendation.setUserId(1);
-        musicStoreLabelRecommendation.setLiked(new Boolean("False"));
+        musicStoreArtistRecommendation = new ArtistRecommendation();
+        musicStoreArtistRecommendation.setArtistId(1);
+        musicStoreArtistRecommendation.setUserId(1);
+        musicStoreArtistRecommendation.setLiked(new Boolean("False"));
 
-        musicStoreJson = mapper.writeValueAsString(musicStoreLabelRecommendation);
+        musicStoreJson = mapper.writeValueAsString(musicStoreArtistRecommendation);
 
         // output
-        LabelRecommendation labelRecommendation = new LabelRecommendation();
-        labelRecommendation.setId(1L);
-        labelRecommendation.setLabelId(1);
-        labelRecommendation.setUserId(1);
-        labelRecommendation.setLiked(new Boolean("False"));
+        ArtistRecommendation artistRecommendation = new ArtistRecommendation();
+        artistRecommendation.setId(1L);
+        artistRecommendation.setArtistId(1);
+        artistRecommendation.setUserId(1);
+        artistRecommendation.setLiked(new Boolean("False"));
 
-        allLabelRecommendations.add(labelRecommendation);
-        allLabelRecommendationsJson = mapper.writeValueAsString(allLabelRecommendations);
+        allArtistRecommendations.add(artistRecommendation);
+        allArtistRecommendationsJson = mapper.writeValueAsString(allArtistRecommendations);
     }
 
     // from work done with RSVP-Service
     // Mock create method
     @Test
-    public void shouldCreateNewLabelRecommendationOnPostRequest() throws Exception {
-        LabelRecommendation inputLabelRecommendation  = new LabelRecommendation();
-        inputLabelRecommendation.setId(1L);
-        inputLabelRecommendation.setLabelId(1);
-        inputLabelRecommendation.setUserId(1);
-        inputLabelRecommendation.setLiked(new Boolean("False"));
+    public void shouldCreateNewArtistRecommendationOnPostRequest() throws Exception {
+        ArtistRecommendation inputArtistRecommendation  = new ArtistRecommendation();
+        inputArtistRecommendation.setId(1L);
+        inputArtistRecommendation.setArtistId(1);
+        inputArtistRecommendation.setUserId(1);
+        inputArtistRecommendation.setLiked(new Boolean("False"));
 
-        String inputJson = mapper.writeValueAsString(inputLabelRecommendation);
-        doReturn(musicStoreLabelRecommendation).when(repo).save(inputLabelRecommendation);
+        String inputJson = mapper.writeValueAsString(inputArtistRecommendation);
+        doReturn(musicStoreArtistRecommendation).when(repo).save(inputArtistRecommendation);
         mockMvc.perform(
-                        post("/labelRecommendation")
+                        post("/artistRecommendation")
                                 .content(inputJson)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -89,11 +90,11 @@ public class LabelRecommendationControllerTest {
 
     // Mock get by ID method
     @Test
-    public void shouldReturnLabelRecommendationById() throws Exception {
-        doReturn(Optional.of(musicStoreLabelRecommendation)).when(repo).findById(1L);
+    public void shouldReturnArtistRecommendationById() throws Exception {
+        doReturn(Optional.of(musicStoreArtistRecommendation)).when(repo).findById(1L);
 
         ResultActions result = mockMvc.perform(
-                        get("/labelRecommendation/1"))
+                        get("/artistRecommendation/1"))
                 .andExpect(status().isOk())
                 .andExpect((content().json(musicStoreJson))
                 );
@@ -101,13 +102,13 @@ public class LabelRecommendationControllerTest {
 
     // Mock get all method
     @Test
-    public void shouldReturnAllLabelRecommendations() throws Exception {
-        doReturn(allLabelRecommendations).when(repo).findAll();
+    public void shouldReturnAllArtistRecommendations() throws Exception {
+        doReturn(allArtistRecommendations).when(repo).findAll();
 
         mockMvc.perform(
-                        get("/labelRecommendation"))
+                        get("/artistRecommendation"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(allLabelRecommendationsJson)
+                .andExpect(content().json(allArtistRecommendationsJson)
                 );
     }
 
@@ -115,7 +116,7 @@ public class LabelRecommendationControllerTest {
     @Test
     public void shouldUpdateByIdAndReturn204StatusCode() throws Exception {
         mockMvc.perform(
-                        put("/labelRecommendation")
+                        put("/artistRecommendation")
                                 .content(musicStoreJson)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -125,6 +126,6 @@ public class LabelRecommendationControllerTest {
     // mock delete method
     @Test
     public void shouldDeleteByIdAndReturn204StatusCode() throws Exception {
-        mockMvc.perform(delete("/labelRecommendation/1")).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/artistRecommendation/1")).andExpect(status().isNoContent());
     }
 }
